@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1w5n3dg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.22.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1w5n3dg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.22.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
   <bpmn:collaboration id="DepositOpeningCollaboration">
     <bpmn:participant id="DepositOpeningId" name="Deposit opening" processRef="DepositOpening" />
     <bpmn:textAnnotation id="TextAnnotation_11558j7">
@@ -14,6 +14,22 @@
       <bpmn:text>1. Client reads the deposit list  2. Choose the preferred deposit</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_0r9nf1t" associationDirection="None" sourceRef="DepositChoosingId" targetRef="TextAnnotation_1gd2ljf" />
+    <bpmn:textAnnotation id="TextAnnotation_1mtx6lq">
+      <bpmn:text>Leave the bank</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_14ymw10" associationDirection="None" sourceRef="Event_1a9v5q3" targetRef="TextAnnotation_1mtx6lq" />
+    <bpmn:textAnnotation id="TextAnnotation_14axpzc">
+      <bpmn:text>1.Check if during client is already client of our bank  2. Set the checking result to boolean var</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0cqqncq" associationDirection="None" sourceRef="ClientExistingCheckingId" targetRef="TextAnnotation_14axpzc" />
+    <bpmn:textAnnotation id="TextAnnotation_0ll2l77">
+      <bpmn:text>1. Check if client wanted by police  2. Is client in the banks black list  3.Is client passport valid                4. Set the result to boolean execution variable</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1sh0zxt" associationDirection="None" sourceRef="ClientFullValidationId" targetRef="TextAnnotation_0ll2l77" />
+    <bpmn:textAnnotation id="TextAnnotation_1efmmbq">
+      <bpmn:text>1.Check if client wanted by police  2. Set the result to boolean execution variable</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0hcol9f" associationDirection="None" sourceRef="ClientParticularValidationId" targetRef="TextAnnotation_1efmmbq" />
   </bpmn:collaboration>
   <bpmn:process id="DepositOpening" name="DepositOpeningName" isExecutable="true">
     <bpmn:laneSet id="LaneSet_1iou4u0">
@@ -21,13 +37,23 @@
         <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>PassportProvodingId</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Event_0bbyn8r</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ErrorPassportShouldBePresentHandleId</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>DepositChoosingId</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Activity_1e615x2</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_16nt2x1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GatewayIsDepositChosenId</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1a9v5q3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ErrorPassportShouldBePresentHandleId</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_0s0dfvx" name="BankWorker">
         <bpmn:flowNodeRef>DepositListProvidingId</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ClientExistingCheckingId</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GatewayIsNewClientId</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GatewayMergeIsNewClientId</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ClientFullValidationId</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ClientParticularValidationId</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GatewayIsSuccessValidationId</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1e615x2</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_16nt2x1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Activity_1eeyamc</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_13cubwt</bpmn:flowNodeRef>
       </bpmn:lane>
     </bpmn:laneSet>
     <bpmn:sequenceFlow id="Flow_1d9o4td" sourceRef="Activity_1e615x2" targetRef="Event_16nt2x1" />
@@ -55,31 +81,95 @@
     <bpmn:sequenceFlow id="Flow_0nbm4ef" sourceRef="DepositListProvidingId" targetRef="DepositChoosingId" />
     <bpmn:userTask id="DepositChoosingId" name="Take a look in to deposit list and choose one of them" camunda:formKey="camunda-forms:/form/select-bank-deposit.form">
       <bpmn:incoming>Flow_0nbm4ef</bpmn:incoming>
-      <bpmn:outgoing>Flow_18etihv</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1pdnywh</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_18etihv" sourceRef="DepositChoosingId" targetRef="Activity_1e615x2" />
+    <bpmn:exclusiveGateway id="GatewayIsDepositChosenId" name="is deposit selected?">
+      <bpmn:incoming>Flow_1pdnywh</bpmn:incoming>
+      <bpmn:outgoing>Flow_0klpv6j</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0k87ysv</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1pdnywh" sourceRef="DepositChoosingId" targetRef="GatewayIsDepositChosenId" />
+    <bpmn:endEvent id="Event_1a9v5q3">
+      <bpmn:incoming>Flow_0klpv6j</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0klpv6j" name="no" sourceRef="GatewayIsDepositChosenId" targetRef="Event_1a9v5q3">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!execution.hasVariable("depositName") || depositName == null}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0k87ysv" name="yes" sourceRef="GatewayIsDepositChosenId" targetRef="ClientExistingCheckingId">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${execution.hasVariable("depositName") &amp;&amp; depositName != null}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="ClientExistingCheckingId" name="Checking is it new client of existing one" camunda:delegateExpression="${clientExistingCheckingDelegate}">
+      <bpmn:incoming>Flow_0k87ysv</bpmn:incoming>
+      <bpmn:outgoing>Flow_000fahg</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="GatewayIsNewClientId" name="is it existing client?" default="Flow_0mzmslv">
+      <bpmn:incoming>Flow_000fahg</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mzmslv</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0np7e11</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_000fahg" sourceRef="ClientExistingCheckingId" targetRef="GatewayIsNewClientId" />
+    <bpmn:sequenceFlow id="Flow_0mzmslv" name="no" sourceRef="GatewayIsNewClientId" targetRef="ClientFullValidationId" />
+    <bpmn:sequenceFlow id="Flow_0np7e11" name="yes" sourceRef="GatewayIsNewClientId" targetRef="ClientParticularValidationId">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isExitingUser}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="GatewayMergeIsNewClientId">
+      <bpmn:incoming>Flow_1htewfs</bpmn:incoming>
+      <bpmn:incoming>Flow_0xbgkvt</bpmn:incoming>
+      <bpmn:outgoing>Flow_1lil6b9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1htewfs" sourceRef="ClientFullValidationId" targetRef="GatewayMergeIsNewClientId" />
+    <bpmn:sequenceFlow id="Flow_0xbgkvt" sourceRef="ClientParticularValidationId" targetRef="GatewayMergeIsNewClientId" />
+    <bpmn:serviceTask id="ClientFullValidationId" name="Perform full customer validation" camunda:delegateExpression="${clientFullValidationDelegate}">
+      <bpmn:incoming>Flow_0mzmslv</bpmn:incoming>
+      <bpmn:outgoing>Flow_1htewfs</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ClientParticularValidationId" name="Perform particular customer validation" camunda:delegateExpression="${clientParticularValidationDelegate}">
+      <bpmn:incoming>Flow_0np7e11</bpmn:incoming>
+      <bpmn:outgoing>Flow_0xbgkvt</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="GatewayIsSuccessValidationId" name="is client successfully passed validation" default="Flow_0dzid8i">
+      <bpmn:incoming>Flow_1lil6b9</bpmn:incoming>
+      <bpmn:outgoing>Flow_13kn9fi</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0dzid8i</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1lil6b9" sourceRef="GatewayMergeIsNewClientId" targetRef="GatewayIsSuccessValidationId" />
+    <bpmn:sequenceFlow id="Flow_13kn9fi" sourceRef="GatewayIsSuccessValidationId" targetRef="Activity_1e615x2">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isValidUser}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:scriptTask id="Activity_1e615x2" name="Deposit opening process" scriptFormat="JavaScript">
-      <bpmn:incoming>Flow_18etihv</bpmn:incoming>
+      <bpmn:incoming>Flow_13kn9fi</bpmn:incoming>
       <bpmn:outgoing>Flow_1d9o4td</bpmn:outgoing>
-      <bpmn:script>print('The deposit opening precess has finished')</bpmn:script>
+      <bpmn:script>print('The client has passed validation!');
+ </bpmn:script>
     </bpmn:scriptTask>
     <bpmn:endEvent id="Event_16nt2x1">
       <bpmn:incoming>Flow_1d9o4td</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:scriptTask id="Activity_1eeyamc" name="Deposit opening process" scriptFormat="JavaScript">
+      <bpmn:incoming>Flow_0dzid8i</bpmn:incoming>
+      <bpmn:outgoing>Flow_1pgg7yn</bpmn:outgoing>
+      <bpmn:script>print('The client has NO passed validation!');
+ </bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_0dzid8i" sourceRef="GatewayIsSuccessValidationId" targetRef="Activity_1eeyamc" />
+    <bpmn:sequenceFlow id="Flow_1pgg7yn" sourceRef="Activity_1eeyamc" targetRef="Event_13cubwt" />
+    <bpmn:endEvent id="Event_13cubwt">
+      <bpmn:incoming>Flow_1pgg7yn</bpmn:incoming>
     </bpmn:endEvent>
   </bpmn:process>
   <bpmn:error id="Error_0fxpg3j" name="SUDDEN_OPERATION_INTERRUPTION_ERROR" errorCode="SUDDEN_OPERATION_INTERRUPTION_ERROR" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="DepositOpeningCollaboration">
       <bpmndi:BPMNShape id="Participant_1poks3y_di" bpmnElement="DepositOpeningId" isHorizontal="true">
-        <dc:Bounds x="158" y="80" width="1422" height="700" />
+        <dc:Bounds x="158" y="80" width="2282" height="770" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_1qc6l8i_di" bpmnElement="Lane_1qc6l8i" isHorizontal="true">
-        <dc:Bounds x="188" y="80" width="1392" height="350" />
+        <dc:Bounds x="188" y="80" width="2252" height="350" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Lane_0s0dfvx_di" bpmnElement="Lane_0s0dfvx" isHorizontal="true">
-        <dc:Bounds x="188" y="430" width="1392" height="350" />
+        <dc:Bounds x="188" y="430" width="2252" height="420" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
@@ -100,12 +190,54 @@
         <dc:Bounds x="750" y="220" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_17vw675_di" bpmnElement="GatewayIsDepositChosenId" isMarkerVisible="true">
+        <dc:Bounds x="975" y="235" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="980" y="205" width="48" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1a9v5q3_di" bpmnElement="Event_1a9v5q3">
+        <dc:Bounds x="1152" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1o6dlpg_di" bpmnElement="ClientExistingCheckingId">
+        <dc:Bounds x="950" y="600" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1wce21v_di" bpmnElement="GatewayIsNewClientId" isMarkerVisible="true">
+        <dc:Bounds x="1155" y="615" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1234" y="630" width="58" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_194bgnj_di" bpmnElement="GatewayMergeIsNewClientId" isMarkerVisible="true">
+        <dc:Bounds x="1515" y="605" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02m8xld_di" bpmnElement="ClientFullValidationId">
+        <dc:Bounds x="1310" y="460" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0yc7vns_di" bpmnElement="ClientParticularValidationId">
+        <dc:Bounds x="1310" y="710" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0q8eept_di" bpmnElement="GatewayIsSuccessValidationId" isMarkerVisible="true">
+        <dc:Bounds x="1675" y="605" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1661" y="575" width="86" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_19rhfuw_di" bpmnElement="Activity_1e615x2">
-        <dc:Bounds x="970" y="220" width="100" height="80" />
+        <dc:Bounds x="1850" y="590" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_16nt2x1_di" bpmnElement="Event_16nt2x1">
-        <dc:Bounds x="1272" y="242" width="36" height="36" />
+        <dc:Bounds x="2142" y="612" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0dt7ymq" bpmnElement="Activity_1eeyamc">
+        <dc:Bounds x="1650" y="720" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_13cubwt_di" bpmnElement="Event_13cubwt">
+        <dc:Bounds x="1882" y="742" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1e1xopa_di" bpmnElement="ErrorPassportShouldBePresentHandleId">
         <dc:Bounds x="482" y="202" width="36" height="36" />
@@ -114,8 +246,8 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1d9o4td_di" bpmnElement="Flow_1d9o4td">
-        <di:waypoint x="1070" y="260" />
-        <di:waypoint x="1272" y="260" />
+        <di:waypoint x="1950" y="630" />
+        <di:waypoint x="2142" y="630" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1wk53p3_di" bpmnElement="Flow_1wk53p3">
         <di:waypoint x="288" y="260" />
@@ -134,9 +266,69 @@
         <di:waypoint x="800" y="640" />
         <di:waypoint x="800" y="300" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_18etihv_di" bpmnElement="Flow_18etihv">
+      <bpmndi:BPMNEdge id="Flow_1pdnywh_di" bpmnElement="Flow_1pdnywh">
         <di:waypoint x="850" y="260" />
-        <di:waypoint x="970" y="260" />
+        <di:waypoint x="975" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0klpv6j_di" bpmnElement="Flow_0klpv6j">
+        <di:waypoint x="1025" y="260" />
+        <di:waypoint x="1152" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1082" y="242" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0k87ysv_di" bpmnElement="Flow_0k87ysv">
+        <di:waypoint x="1000" y="285" />
+        <di:waypoint x="1000" y="600" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1007" y="440" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_000fahg_di" bpmnElement="Flow_000fahg">
+        <di:waypoint x="1050" y="640" />
+        <di:waypoint x="1155" y="640" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mzmslv_di" bpmnElement="Flow_0mzmslv">
+        <di:waypoint x="1180" y="615" />
+        <di:waypoint x="1180" y="500" />
+        <di:waypoint x="1310" y="500" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1189" y="555" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0np7e11_di" bpmnElement="Flow_0np7e11">
+        <di:waypoint x="1180" y="665" />
+        <di:waypoint x="1180" y="750" />
+        <di:waypoint x="1310" y="750" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1187" y="705" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1htewfs_di" bpmnElement="Flow_1htewfs">
+        <di:waypoint x="1410" y="500" />
+        <di:waypoint x="1540" y="500" />
+        <di:waypoint x="1540" y="605" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xbgkvt_di" bpmnElement="Flow_0xbgkvt">
+        <di:waypoint x="1410" y="750" />
+        <di:waypoint x="1540" y="750" />
+        <di:waypoint x="1540" y="655" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lil6b9_di" bpmnElement="Flow_1lil6b9">
+        <di:waypoint x="1565" y="630" />
+        <di:waypoint x="1675" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13kn9fi_di" bpmnElement="Flow_13kn9fi">
+        <di:waypoint x="1725" y="630" />
+        <di:waypoint x="1850" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dzid8i_di" bpmnElement="Flow_0dzid8i">
+        <di:waypoint x="1700" y="655" />
+        <di:waypoint x="1700" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1pgg7yn_di" bpmnElement="Flow_1pgg7yn">
+        <di:waypoint x="1750" y="760" />
+        <di:waypoint x="1882" y="760" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_0x1kg7x_di" bpmnElement="Association_0x1kg7x">
         <di:waypoint x="420" y="220" />
@@ -150,6 +342,22 @@
         <di:waypoint x="400" y="659" />
         <di:waypoint x="319" y="690" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_14ymw10_di" bpmnElement="Association_14ymw10">
+        <di:waypoint x="1181" y="246" />
+        <di:waypoint x="1228" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0cqqncq_di" bpmnElement="Association_0cqqncq">
+        <di:waypoint x="950" y="663" />
+        <di:waypoint x="892" y="690" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1sh0zxt_di" bpmnElement="Association_1sh0zxt">
+        <di:waypoint x="1333" y="460" />
+        <di:waypoint x="1287" y="394" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0hcol9f_di" bpmnElement="Association_0hcol9f">
+        <di:waypoint x="1310" y="755" />
+        <di:waypoint x="1250" y="761" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_11558j7_di" bpmnElement="TextAnnotation_11558j7">
         <dc:Bounds x="300" y="110" width="100" height="98" />
         <bpmndi:BPMNLabel />
@@ -160,6 +368,22 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="TextAnnotation_0a5mj5j_di" bpmnElement="TextAnnotation_0a5mj5j">
         <dc:Bounds x="230" y="690" width="170" height="60" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1mtx6lq_di" bpmnElement="TextAnnotation_1mtx6lq">
+        <dc:Bounds x="1190" y="160" width="99.99999822778292" height="29.99419368517939" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_14axpzc_di" bpmnElement="TextAnnotation_14axpzc">
+        <dc:Bounds x="810" y="690" width="127.40999370224938" height="83.62369337979094" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0ll2l77_di" bpmnElement="TextAnnotation_0ll2l77">
+        <dc:Bounds x="1190" y="310" width="218.45479082321185" height="83.6707152496626" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_1efmmbq_di" bpmnElement="TextAnnotation_1efmmbq">
+        <dc:Bounds x="1070" y="760" width="180" height="70" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>

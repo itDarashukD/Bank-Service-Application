@@ -34,6 +34,7 @@ public class BankController {
 		    .createProcessInstanceByKey(MAIN_DEPOSIT_CREDIT_PROCESS)
 		    .businessKey(businessKey)
 		    .setVariables(prepareVariables(DZMITRY))
+//		    .setVariables(prepareVariables(TIK))
 		    .executeWithVariablesInReturn();
 
         return ResponseEntity.ok()
