@@ -41,6 +41,5 @@ public class ClientExistingCheckingDelegate implements JavaDelegate {
 	       && info.getName().equals(passport.getName())
 	       && info.getSurname().equals(passport.getSurname())
 	       && info.getBirthDate().equals(passport.getBirthDate());
-
     }
 }

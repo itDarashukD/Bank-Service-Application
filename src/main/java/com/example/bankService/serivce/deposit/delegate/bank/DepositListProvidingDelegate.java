@@ -20,6 +20,5 @@ public class DepositListProvidingDelegate implements JavaDelegate {
         log.info(String.format("The list of deposits provided by bank : %s ", BANK_DEPOSITS));
 
         execution.setVariable("bankDeposits", BANK_DEPOSITS);
-
     }
 }

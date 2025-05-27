@@ -2,6 +2,7 @@ package com.example.bankService.controller;
 
 import static com.example.bankService.util.Constants.DZMITRY;
 import static com.example.bankService.util.Constants.MAIN_DEPOSIT_CREDIT_PROCESS;
+import static com.example.bankService.util.Constants.MIKE;
 
 import com.example.bankService.model.Client;
 import java.util.HashMap;
@@ -33,7 +34,8 @@ public class BankController {
 		    .getRuntimeService()
 		    .createProcessInstanceByKey(MAIN_DEPOSIT_CREDIT_PROCESS)
 		    .businessKey(businessKey)
-		    .setVariables(prepareVariables(DZMITRY))
+//		    .setVariables(prepareVariables(DZMITRY))
+		    .setVariables(prepareVariables(MIKE))
 //		    .setVariables(prepareVariables(TIK))
 		    .executeWithVariablesInReturn();
 

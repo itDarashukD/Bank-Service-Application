@@ -82,6 +82,41 @@
     </bpmn:callActivity>
     <bpmn:sequenceFlow id="Flow_06mfy9m" sourceRef="Gateway_1wc6ify" targetRef="ActivityRoadToHomeId" />
     <bpmn:sequenceFlow id="Flow_1b4014z" sourceRef="ActivityRoadToHomeId" targetRef="EndEvent_0x6ir2l" />
+    <bpmn:subProcess id="Activity_07e9lh0" name="Run out of the bank since client is criminal and doesn’t want to be caught by the police" triggeredByEvent="true">
+      <bpmn:startEvent id="ClientIsCriminalStartErrorId" name="Client is criminal start error">
+        <bpmn:outgoing>Flow_0qk8t2f</bpmn:outgoing>
+        <bpmn:errorEventDefinition id="ErrorEventDefinition_1tkgulh" errorRef="Error_0goc5tv" camunda:errorCodeVariable="CLIENT_IS_CRIMINAL_ERROR" />
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="Flow_0qk8t2f" sourceRef="ClientIsCriminalStartErrorId" targetRef="Activity_10kpns3" />
+      <bpmn:scriptTask id="Activity_10kpns3" name="Run out of the bank" scriptFormat="JavaScript" camunda:resource="script/run-out-of-the-bank-script.js">
+        <bpmn:incoming>Flow_0qk8t2f</bpmn:incoming>
+        <bpmn:outgoing>Flow_0mwup4r</bpmn:outgoing>
+      </bpmn:scriptTask>
+      <bpmn:endEvent id="ClientIsCriminalEndEventId" name="Client is criminal end event">
+        <bpmn:incoming>Flow_0mwup4r</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_0mwup4r" sourceRef="Activity_10kpns3" targetRef="ClientIsCriminalEndEventId" />
+    </bpmn:subProcess>
+    <bpmn:subProcess id="Activity_06nf4ta" name="Go home after operation sudden&#10;interaction" triggeredByEvent="true">
+      <bpmn:startEvent id="EventSuddenOperationInterruptionErrorStartId" name="Event sudden operation interruption error start">
+        <bpmn:outgoing>Flow_0pkmevo</bpmn:outgoing>
+        <bpmn:errorEventDefinition id="ErrorEventDefinition_1spt9hx" errorRef="Error_1rmz8h2" camunda:errorCodeVariable="SUDDEN_OPERATION_INTERRUPTION_ERROR" />
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="Flow_0pkmevo" sourceRef="EventSuddenOperationInterruptionErrorStartId" targetRef="RoadToHomeAfterExeptionId" />
+      <bpmn:callActivity id="RoadToHomeAfterExeptionId" name="RoadToHomeAfterExeption" calledElement="GoingHome">
+        <bpmn:extensionElements>
+          <camunda:in businessKey="#{execution.processBusinessKey}" />
+          <camunda:in variables="all" />
+          <camunda:out variables="all" />
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_0pkmevo</bpmn:incoming>
+        <bpmn:outgoing>Flow_1w75spe</bpmn:outgoing>
+      </bpmn:callActivity>
+      <bpmn:endEvent id="EventSuddenOperationInteruptionErrorEndId" name="EventSuddenOperationInteruptionErrorEnd">
+        <bpmn:incoming>Flow_1w75spe</bpmn:incoming>
+      </bpmn:endEvent>
+      <bpmn:sequenceFlow id="Flow_1w75spe" sourceRef="RoadToHomeAfterExeptionId" targetRef="EventSuddenOperationInteruptionErrorEndId" />
+    </bpmn:subProcess>
     <bpmn:textAnnotation id="TextAnnotation_0ucviml">
       <bpmn:text>Camunda forms   - Choose transport to the bank ( walking or taxi ?)</bpmn:text>
     </bpmn:textAnnotation>
@@ -107,6 +142,8 @@
     </bpmn:textAnnotation>
     <bpmn:association id="Association_0ubncn5" associationDirection="None" sourceRef="ActivityRoadToHomeId" targetRef="TextAnnotation_0axxa96" />
   </bpmn:process>
+  <bpmn:error id="Error_0goc5tv" name="CLIENT_IS_CRIMINAL_ERROR" errorCode="CLIENT_IS_CRIMINAL_ERROR" camunda:errorMessage="CLIENT_IS_CRIMINAL_ERROR" />
+  <bpmn:error id="Error_1rmz8h2" name="SUDDEN_OPERATION_INTERRUPTION_ERROR" errorCode="SUDDEN_OPERATION_INTERRUPTION_ERROR" camunda:errorMessage="SUDDEN_OPERATION_INTERRUPTION_ERROR" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="MainDepositCreditProcess">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
@@ -155,6 +192,62 @@
         <dc:Bounds x="1950" y="367" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_13gwmvl_di" bpmnElement="Activity_06nf4ta" isExpanded="true">
+        <dc:Bounds x="1210" y="770" width="560" height="200" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1frwrr2_di" bpmnElement="EventSuddenOperationInterruptionErrorStartId" bioc:stroke="#831311" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#831311">
+        <dc:Bounds x="1250" y="852" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1227" y="895" width="83" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19r6wlw_di" bpmnElement="RoadToHomeAfterExeptionId" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="1440" y="830" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_05ojhxs_di" bpmnElement="EventSuddenOperationInteruptionErrorEndId">
+        <dc:Bounds x="1702" y="852" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1676" y="895" width="88" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0pkmevo_di" bpmnElement="Flow_0pkmevo">
+        <di:waypoint x="1286" y="870" />
+        <di:waypoint x="1440" y="870" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1w75spe_di" bpmnElement="Flow_1w75spe">
+        <di:waypoint x="1540" y="870" />
+        <di:waypoint x="1702" y="870" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1ur23vy_di" bpmnElement="Activity_07e9lh0" isExpanded="true">
+        <dc:Bounds x="1215" y="1050" width="555" height="200" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0vhsyg6_di" bpmnElement="Activity_10kpns3" bioc:stroke="#5b176d" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#5b176d">
+        <dc:Bounds x="1450" y="1110" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1a9313c_di" bpmnElement="ClientIsCriminalEndEventId">
+        <dc:Bounds x="1672" y="1132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1650" y="1175" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_16vlljk_di" bpmnElement="ClientIsCriminalStartErrorId" bioc:stroke="#831311" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#831311">
+        <dc:Bounds x="1292" y="1132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1270" y="1175" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0qk8t2f_di" bpmnElement="Flow_0qk8t2f">
+        <di:waypoint x="1328" y="1150" />
+        <di:waypoint x="1450" y="1150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mwup4r_di" bpmnElement="Flow_0mwup4r">
+        <di:waypoint x="1550" y="1150" />
+        <di:waypoint x="1672" y="1150" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="TextAnnotation_0ucviml_di" bpmnElement="TextAnnotation_0ucviml">
         <dc:Bounds x="270" y="220" width="120" height="98" />
         <bpmndi:BPMNLabel />
