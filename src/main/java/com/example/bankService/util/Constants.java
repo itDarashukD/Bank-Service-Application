@@ -102,6 +102,7 @@ public class Constants {
 
     public static final String SUDDEN_OPERATION_INTERRUPTION_ERROR = "SUDDEN_OPERATION_INTERRUPTION_ERROR";
     public static final String VERIFICATION_SMS_NOT_OBTAINED = "VERIFICATION_SMS_NOT_OBTAINED";
+    public static final String LIMIT_OF_VERIFICATION_SMS_ATTEMPTS_EXCEEDED = "LIMIT_OF_VERIFICATION_SMS_ATTEMPTS_EXCEEDED";
 
 
     private static final Deposit EARLY_SPRING = Deposit.builder()

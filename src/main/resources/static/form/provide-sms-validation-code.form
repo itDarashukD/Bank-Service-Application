@@ -31,13 +31,15 @@
         "columns": 6
       },
       "id": "Field_0p949e4",
-      "key": "number_4333lr",
-      "description": "obtained mobile code",
+      "key": "obtainedMobileCode",
+      "description": "Enter your code in format XXXXXX",
       "validate": {
         "required": true,
         "min": 0,
         "max": 999999
-      }
+      },
+      "defaultValue": 0,
+      "decimalDigits": 0
     }
   ],
   "type": "default",
