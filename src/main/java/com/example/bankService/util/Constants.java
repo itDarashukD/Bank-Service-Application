@@ -2,6 +2,7 @@ package com.example.bankService.util;
 
 import com.example.bankService.model.Client;
 import com.example.bankService.model.Deposit;
+import com.example.bankService.model.DepositContract;
 import com.example.bankService.model.Passport;
 import com.example.bankService.model.Wallet;
 import java.math.BigDecimal;
@@ -103,6 +104,8 @@ public class Constants {
     public static final String SUDDEN_OPERATION_INTERRUPTION_ERROR = "SUDDEN_OPERATION_INTERRUPTION_ERROR";
     public static final String VERIFICATION_SMS_NOT_OBTAINED = "VERIFICATION_SMS_NOT_OBTAINED";
     public static final String LIMIT_OF_VERIFICATION_SMS_ATTEMPTS_EXCEEDED = "LIMIT_OF_VERIFICATION_SMS_ATTEMPTS_EXCEEDED";
+    public static final String NO_MORE_DEPOSITS_TO_OPEN = "NO_MORE_DEPOSITS_TO_OPEN";
+    public static final String NOT_ENOUGH_MONEY = "NOT_ENOUGH_MONEY";
 
 
     private static final Deposit EARLY_SPRING = Deposit.builder()
@@ -139,6 +142,9 @@ public class Constants {
     public static final List<Passport> BANK_ALREADY_CLIENTS_INFO = List.of(DZMITRY_PASSPORT, JOHN_PASSPORT);
     public static final List<Client> POLICE_WANTED_LIST = List.of( );
     public static final List<Client> BANK_BLACK_LIST = List.of(MIKE);
+
+
+    public static final DepositContract BLANK_DEPOSIT_CONTRACT = new DepositContract();
 
 
 }

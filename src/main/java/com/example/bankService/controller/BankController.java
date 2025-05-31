@@ -34,8 +34,8 @@ public class BankController {
 		    .getRuntimeService()
 		    .createProcessInstanceByKey(MAIN_DEPOSIT_CREDIT_PROCESS)
 		    .businessKey(businessKey)
-//		    .setVariables(prepareVariables(DZMITRY))
-		    .setVariables(prepareVariables(MIKE))
+		    .setVariables(prepareVariables(DZMITRY))
+//		    .setVariables(prepareVariables(MIKE))
 //		    .setVariables(prepareVariables(TIK))
 		    .executeWithVariablesInReturn();
 

@@ -29,7 +29,7 @@ public class PrepareSmsDelegate implements JavaDelegate {
         Optional.ofNullable(sendMobileCodeCount)
 	       .ifPresentOrElse(
 		      (count) -> execution.setVariable("sendMobileCodeCount", count + 1),
-		      () -> execution.setVariable("sendMobileCodeCount", 1));
+		      () -> execution.setVariable("sendMobileCodeCount",1 ));
     }
 
     private int prepareSmsCode() {

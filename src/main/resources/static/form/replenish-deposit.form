@@ -1,0 +1,68 @@
+{
+  "components": [
+    {
+      "text": "<h1><em>Please enter count of money you want to deposit replenish</em><h1>",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_0iep0dx",
+        "columns": null
+      },
+      "id": "Field_0xnhfch"
+    },
+    {
+      "label": "Money on client wallet",
+      "type": "number",
+      "layout": {
+        "row": "Row_0opunwh",
+        "columns": 7
+      },
+      "id": "Field_18nur7y",
+      "key": "number_a6b5g7",
+      "appearance": {
+        "prefixAdorner": "{{clien.wallet.moneyCount}}"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Minimal reqiured sum to deposit replenish",
+      "type": "number",
+      "layout": {
+        "row": "Row_1o0c5zj",
+        "columns": 7
+      },
+      "id": "Field_0esftm3",
+      "key": "number_vd04j",
+      "appearance": {
+        "prefixAdorner": "{{preparedDepositContract.minimalSum}}"
+      },
+      "readonly": true
+    },
+    {
+      "label": "Count of money you want to replenish",
+      "type": "number",
+      "layout": {
+        "row": "Row_0e20n5t",
+        "columns": 6
+      },
+      "id": "Field_19x2fmh",
+      "key": "paidMoney",
+      "defaultValue": 11.11,
+      "decimalDigits": 2,
+      "validate": {
+        "required": true,
+        "min": 0,
+        "max": 999999
+      }
+    }
+  ],
+  "type": "default",
+  "id": "Form_0sqdk20",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.22.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.21.0",
+  "schemaVersion": 16
+}

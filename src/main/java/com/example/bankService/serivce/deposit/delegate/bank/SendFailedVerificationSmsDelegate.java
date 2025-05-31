@@ -10,7 +10,7 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
+@Component("sendFailedVerificationSmsDelegate")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SendFailedVerificationSmsDelegate implements JavaDelegate {

@@ -1,0 +1,35 @@
+{
+  "components": [
+    {
+      "text": "# Please sign the contract if you want",
+      "label": "Text view",
+      "type": "text",
+      "layout": {
+        "row": "Row_07evew4",
+        "columns": null
+      },
+      "id": "Field_1rqy6no"
+    },
+    {
+      "label": "Sign contract",
+      "type": "checkbox",
+      "layout": {
+        "row": "Row_0701958",
+        "columns": null
+      },
+      "id": "Field_14hy37s",
+      "key": "isContractSigned",
+      "defaultValue": true,
+      "description": "Please click the checkebox to sign the contract"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0sqdk20",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.22.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.21.0",
+  "schemaVersion": 16
+}

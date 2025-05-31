@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1w5n3dg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.22.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
-  <bpmn:process id="DepositOpening" isExecutable="true">
+  <bpmn:process id="GoingHome" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_1333c6u</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_1333c6u" sourceRef="StartEvent_1" targetRef="Activity_1e615x2" />
-    <bpmn:scriptTask id="Activity_1e615x2" name="Deposit opening process" scriptFormat="JavaScript">
+    <bpmn:scriptTask id="Activity_1e615x2" name="Going home process" scriptFormat="JavaScript">
       <bpmn:incoming>Flow_1333c6u</bpmn:incoming>
       <bpmn:outgoing>Flow_1d9o4td</bpmn:outgoing>
-      <bpmn:script>print('Hello from deposit opening process')</bpmn:script>
+      <bpmn:script>print('Hello from going home process')</bpmn:script>
     </bpmn:scriptTask>
     <bpmn:endEvent id="Event_16nt2x1">
       <bpmn:incoming>Flow_1d9o4td</bpmn:incoming>
@@ -16,7 +16,7 @@
     <bpmn:sequenceFlow id="Flow_1d9o4td" sourceRef="Activity_1e615x2" targetRef="Event_16nt2x1" />
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="DepositOpening">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="GoingHome">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="152" y="102" width="36" height="36" />
       </bpmndi:BPMNShape>
