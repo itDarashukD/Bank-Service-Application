@@ -20,7 +20,7 @@
       "id": "Field_18nur7y",
       "key": "number_a6b5g7",
       "appearance": {
-        "prefixAdorner": "{{clien.wallet.moneyCount}}"
+        "prefixAdorner": "{{client.wallet.moneyCount}}"
       },
       "readonly": true
     },

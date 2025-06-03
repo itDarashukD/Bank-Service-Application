@@ -88,9 +88,8 @@
         <bpmn:flowNodeRef>MoneyCountVerificationId</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ErrorNotEnoughtMoneyHandleId2</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ErrorNotEnoughtMoneyId2</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>SignaToFinishDepositProcessId</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1e615x2</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_16nt2x1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>SignaToFinishDepositProcessId</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_1qc6l8i" name="Client">
         <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
@@ -282,7 +281,6 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isContractSigned==true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_18skhxy" sourceRef="Gateway_1ls52z7" targetRef="DepoositChoosingCountId" />
-    <bpmn:sequenceFlow id="Flow_1d9o4td" sourceRef="Activity_1e615x2" targetRef="Event_16nt2x1" />
     <bpmn:sequenceFlow id="Flow_037bxf1" sourceRef="ErrorNoMoreDepositHandleId" targetRef="ErrorNoMoreDepositThrowId" />
     <bpmn:sequenceFlow id="Flow_0mmhe7s" sourceRef="DepoositChoosingCountId" targetRef="DepositChoosingId" />
     <bpmn:exclusiveGateway id="Gateway_1nzz7fv" name="is another deposit selected?" default="Flow_0gse282">
@@ -335,23 +333,19 @@
       <bpmn:incoming>Flow_1heojax</bpmn:incoming>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_1ukic5q" errorRef="Error_19c0vma" />
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1xvaqtp" sourceRef="MoneyCountVerificationId" targetRef="Activity_1e615x2" />
+    <bpmn:sequenceFlow id="Flow_1xvaqtp" sourceRef="MoneyCountVerificationId" targetRef="SignaToFinishDepositProcessId" />
+    <bpmn:scriptTask id="Activity_1e615x2" name="Deposit opening process" scriptFormat="JavaScript">
+      <bpmn:script>print('The deposit opening process is finished !');
+ </bpmn:script>
+    </bpmn:scriptTask>
     <bpmn:endEvent id="SignaToFinishDepositProcessId" name="Signal to finish deposit process">
+      <bpmn:incoming>Flow_1xvaqtp</bpmn:incoming>
       <bpmn:signalEventDefinition id="SignalEventDefinition_1kpow1q" signalRef="Signal_3ovrrko">
         <bpmn:extensionElements>
           <camunda:in sourceExpression="${execution.getVariable(&#39;client&#39;).getName()}" target="clientName" />
           <camunda:in sourceExpression="${execution.getVariable(&#39;ticket&#39;)}" target="ticket" />
         </bpmn:extensionElements>
       </bpmn:signalEventDefinition>
-    </bpmn:endEvent>
-    <bpmn:scriptTask id="Activity_1e615x2" name="Deposit opening process" scriptFormat="JavaScript">
-      <bpmn:incoming>Flow_1xvaqtp</bpmn:incoming>
-      <bpmn:outgoing>Flow_1d9o4td</bpmn:outgoing>
-      <bpmn:script>print('The deposit opening process is finished !');
- </bpmn:script>
-    </bpmn:scriptTask>
-    <bpmn:endEvent id="Event_16nt2x1">
-      <bpmn:incoming>Flow_1d9o4td</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:association id="Association_1hxnj48" associationDirection="None" sourceRef="SignaToFinishDepositProcessId" targetRef="TextAnnotation_1bvp2gt" />
   </bpmn:process>
@@ -526,18 +520,15 @@
           <dc:Bounds x="3757" y="665" width="87" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1yg9756_di" bpmnElement="SignaToFinishDepositProcessId" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
-        <dc:Bounds x="3772" y="922" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="3753" y="965" width="78" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_19rhfuw_di" bpmnElement="Activity_1e615x2" bioc:stroke="#5b176d" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#5b176d">
-        <dc:Bounds x="3730" y="730" width="100" height="80" />
+        <dc:Bounds x="3550" y="1010" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_16nt2x1_di" bpmnElement="Event_16nt2x1">
-        <dc:Bounds x="3892" y="752" width="36" height="36" />
+      <bpmndi:BPMNShape id="Event_1yg9756_di" bpmnElement="SignaToFinishDepositProcessId" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="3722" y="752" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="3781" y="776" width="78" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0u9pswm_di" bpmnElement="Activity_0dtkh45" isExpanded="true">
         <dc:Bounds x="3030" y="950" width="350" height="200" />
@@ -568,8 +559,8 @@
         <di:waypoint x="3322" y="1050" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_1hxnj48_di" bpmnElement="Association_1hxnj48">
-        <di:waypoint x="3775" y="931" />
-        <di:waypoint x="3760" y="921" />
+        <di:waypoint x="3731" y="785" />
+        <di:waypoint x="3689" y="857" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_1e1xopa_di" bpmnElement="ErrorPassportShouldBePresentHandleId" bioc:stroke="#831311" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#831311">
         <dc:Bounds x="482" y="342" width="36" height="36" />
@@ -721,13 +712,6 @@
         <di:waypoint x="2850" y="405" />
         <di:waypoint x="2850" y="320" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1d9o4td_di" bpmnElement="Flow_1d9o4td">
-        <di:waypoint x="3830" y="770" />
-        <di:waypoint x="3892" y="770" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="3153" y="272" width="17" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_037bxf1_di" bpmnElement="Flow_037bxf1">
         <di:waypoint x="2918" y="240" />
         <di:waypoint x="3032" y="240" />
@@ -774,7 +758,7 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1xvaqtp_di" bpmnElement="Flow_1xvaqtp">
         <di:waypoint x="3540" y="770" />
-        <di:waypoint x="3730" y="770" />
+        <di:waypoint x="3720" y="770" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Association_0x1kg7x_di" bpmnElement="Association_0x1kg7x">
         <di:waypoint x="420" y="360" />

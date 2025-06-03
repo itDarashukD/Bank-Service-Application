@@ -34,7 +34,5 @@ public class DepositReplenishmentDelegate implements JavaDelegate {
         var depositMinimalSum = preparedContract.getMinimalSum();
 
         return moneyOnWallet.compareTo(depositMinimalSum) >= 0;
-
-
     }
 }
