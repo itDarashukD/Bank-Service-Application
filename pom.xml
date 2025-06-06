@@ -142,6 +142,13 @@ Allows working with JSON/Java objects as process variables, including FEEL expre
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.camunda.bpm.extension.mockito</groupId>
+      <artifactId>camunda-bpm-mockito</artifactId>
+      <version>5.16.0</version>
+      <scope>test</scope>
+    </dependency>
+
 
   </dependencies>
 

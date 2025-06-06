@@ -36,7 +36,7 @@ public class SmsValidationDelegate implements JavaDelegate {
 
 	   if (sendMobileCodeCount == 3) {
 	       throw new BpmnError(LIMIT_OF_VERIFICATION_SMS_ATTEMPTS_EXCEEDED,
-				"The count of chances to verify mobile code id greater than allowed!");
+				"The count of chances to verify mobile code is greater than allowed!");
 	   }
 	   execution.setVariable("isSmsCodeValid", false);
 

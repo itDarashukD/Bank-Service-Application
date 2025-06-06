@@ -24,7 +24,8 @@ public class StartVerificationSmsDelegate implements JavaDelegate {
     public void execute(DelegateExecution execution) throws Exception {
         log.info("the StartVerificationSmsDelegate has started...");
 
-        var businessKey = execution.getBusinessKey();
+        var businessKey = execution.getProcessBusinessKey();
+
         var client = (Client) execution.getVariable("client");
 
         runtimeService.createMessageCorrelation(START_MESSAGE)
