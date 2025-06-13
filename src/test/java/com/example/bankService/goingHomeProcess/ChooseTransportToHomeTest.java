@@ -6,15 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.example.bankService.model.Client;
 import com.example.bankService.util.AbstractTestBase;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.camunda.bpm.dmn.engine.DmnDecision;
-import org.camunda.bpm.dmn.engine.DmnDecisionRequirementsGraph;
-import org.camunda.bpm.dmn.engine.DmnDecisionTableResult;
 import org.camunda.bpm.dmn.engine.DmnEngine;
 import org.camunda.bpm.dmn.engine.impl.DefaultDmnEngineConfiguration;
 import org.junit.jupiter.api.BeforeEach;

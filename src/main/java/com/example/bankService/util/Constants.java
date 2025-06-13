@@ -140,7 +140,7 @@ public class Constants {
 
     public static final List<Deposit> BANK_DEPOSITS = List.of(EARLY_SPRING, HOT_SUMMER, COLORFUL_AUTUMN);
     public static final List<Passport> BANK_ALREADY_CLIENTS_INFO = List.of(DZMITRY_PASSPORT, JOHN_PASSPORT);
-    public static final List<Client> POLICE_WANTED_LIST = List.of( );
+    public static final List<Client> POLICE_WANTED_LIST = List.of(MIKE);
     public static final List<Client> BANK_BLACK_LIST = List.of(MIKE);
 
 

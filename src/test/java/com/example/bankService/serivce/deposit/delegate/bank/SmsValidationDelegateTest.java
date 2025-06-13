@@ -2,7 +2,6 @@ package com.example.bankService.serivce.deposit.delegate.bank;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
 import com.example.bankService.util.AbstractTestBase;

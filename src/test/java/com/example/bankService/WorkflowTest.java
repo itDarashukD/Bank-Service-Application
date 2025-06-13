@@ -1,5 +1,7 @@
 package com.example.bankService;
 
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.assertThat;
+
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.spring.boot.starter.test.helper.AbstractProcessEngineRuleTest;
@@ -9,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.assertThat;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)

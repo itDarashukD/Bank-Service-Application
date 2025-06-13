@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1w5n3dg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.22.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1w5n3dg" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.22.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.21.0">
   <bpmn:process id="GoingHome" isExecutable="true">
     <bpmn:startEvent id="StartEvent_1">
       <bpmn:outgoing>Flow_1333c6u</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="Flow_1333c6u" sourceRef="StartEvent_1" targetRef="ChooseTransportToHomeId" />
-    <bpmn:scriptTask id="Activity_1e615x2" name="Going home process" scriptFormat="JavaScript">
+    <bpmn:scriptTask id="GoingHomeProcessPrint" name="Going home process" scriptFormat="JavaScript">
       <bpmn:incoming>Flow_1pyzcgc</bpmn:incoming>
       <bpmn:outgoing>Flow_1d9o4td</bpmn:outgoing>
       <bpmn:script>var client = execution.getVariable('client');   
@@ -16,8 +16,8 @@ print("Client : " + client.name + " going home by " + transport);</bpmn:script>
     <bpmn:endEvent id="Event_16nt2x1">
       <bpmn:incoming>Flow_1d9o4td</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1d9o4td" sourceRef="Activity_1e615x2" targetRef="Event_16nt2x1" />
-    <bpmn:sequenceFlow id="Flow_1pyzcgc" sourceRef="ChooseTransportToHomeId" targetRef="Activity_1e615x2" />
+    <bpmn:sequenceFlow id="Flow_1d9o4td" sourceRef="GoingHomeProcessPrint" targetRef="Event_16nt2x1" />
+    <bpmn:sequenceFlow id="Flow_1pyzcgc" sourceRef="ChooseTransportToHomeId" targetRef="GoingHomeProcessPrint" />
     <bpmn:businessRuleTask id="ChooseTransportToHomeId" name="Choose transport to home" camunda:asyncBefore="true" camunda:resultVariable="transport" camunda:decisionRef="choose-transport-to-home-dmn" camunda:mapDecisionResult="singleEntry">
       <bpmn:incoming>Flow_1333c6u</bpmn:incoming>
       <bpmn:outgoing>Flow_1pyzcgc</bpmn:outgoing>
@@ -25,31 +25,31 @@ print("Client : " + client.name + " going home by " + transport);</bpmn:script>
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="GoingHome">
-      <bpmndi:BPMNShape id="Activity_19rhfuw_di" bpmnElement="Activity_1e615x2">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19rhfuw_di" bpmnElement="GoingHomeProcessPrint" bioc:stroke="#5b176d" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#5b176d">
         <dc:Bounds x="480" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_16nt2x1_di" bpmnElement="Event_16nt2x1">
         <dc:Bounds x="632" y="102" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="152" y="102" width="36" height="36" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1w8l2k4_di" bpmnElement="ChooseTransportToHomeId">
+      <bpmndi:BPMNShape id="Activity_1w8l2k4_di" bpmnElement="ChooseTransportToHomeId" bioc:stroke="#0d4372" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#0d4372">
         <dc:Bounds x="270" y="80" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Flow_1pyzcgc_di" bpmnElement="Flow_1pyzcgc">
-        <di:waypoint x="370" y="120" />
-        <di:waypoint x="480" y="120" />
+      <bpmndi:BPMNEdge id="Flow_1333c6u_di" bpmnElement="Flow_1333c6u">
+        <di:waypoint x="188" y="120" />
+        <di:waypoint x="270" y="120" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1d9o4td_di" bpmnElement="Flow_1d9o4td">
         <di:waypoint x="580" y="120" />
         <di:waypoint x="632" y="120" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1333c6u_di" bpmnElement="Flow_1333c6u">
-        <di:waypoint x="188" y="120" />
-        <di:waypoint x="270" y="120" />
+      <bpmndi:BPMNEdge id="Flow_1pyzcgc_di" bpmnElement="Flow_1pyzcgc">
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="480" y="120" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

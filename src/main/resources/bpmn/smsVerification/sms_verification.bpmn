@@ -17,14 +17,14 @@
     <bpmn:textAnnotation id="TextAnnotation_1uicsaf">
       <bpmn:text>1.Check if obtained sms code is not null    2. Check if them are equal    3. If not equal  - increase code error count   4. In case error count is more then appropriate - throw an exception</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_1nnxqfv" associationDirection="None" sourceRef="ValidatCodeFromSmsId" targetRef="TextAnnotation_1uicsaf" />
+    <bpmn:association id="Association_1nnxqfv" associationDirection="None" sourceRef="ValidateCodeFromSmsId" targetRef="TextAnnotation_1uicsaf" />
     <bpmn:textAnnotation id="TextAnnotation_04g0w1h">
       <bpmn:text>1. Send validation failed message</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:textAnnotation id="TextAnnotation_0jf7jkj">
       <bpmn:text>1. Send validation success  message</bpmn:text>
     </bpmn:textAnnotation>
-    <bpmn:association id="Association_000tsot" associationDirection="None" sourceRef="SendSuceessVerificationSmsId" targetRef="TextAnnotation_0jf7jkj" />
+    <bpmn:association id="Association_000tsot" associationDirection="None" sourceRef="SendSuccessVerificationSmsId" targetRef="TextAnnotation_0jf7jkj" />
   </bpmn:collaboration>
   <bpmn:process id="SmsVerification" name="SmsVerification" isExecutable="true">
     <bpmn:laneSet id="LaneSet_0l15cdl">
@@ -36,9 +36,9 @@
       <bpmn:lane id="Lane_0qr7zze" name="Bank worker">
         <bpmn:flowNodeRef>VerificationSmsStartMessageId</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>PrepareAndSendVerificationSmsId</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Gateway_1ufjcc8</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>ValidatCodeFromSmsId</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>SendSuceessVerificationSmsId</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GatewayIsSmsCodeValid</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ValidateCodeFromSmsId</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>SendSuccessVerificationSmsId</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>SendFailedVerificationSmsId</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>ErrorNoMoreSmsValidationAttempts</bpmn:flowNodeRef>
         <bpmn:childLaneSet id="LaneSet_0y5cugc" />
@@ -70,22 +70,22 @@
       <bpmn:incoming>Flow_0u5h5lf</bpmn:incoming>
       <bpmn:outgoing>Flow_1to0b9x</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:sequenceFlow id="Flow_1to0b9x" sourceRef="ProvideSmsValidationCodeId" targetRef="ValidatCodeFromSmsId" />
-    <bpmn:sequenceFlow id="Flow_1dtsltc" sourceRef="ValidatCodeFromSmsId" targetRef="Gateway_1ufjcc8" />
-    <bpmn:exclusiveGateway id="Gateway_1ufjcc8" default="Flow_1qakdkp">
+    <bpmn:sequenceFlow id="Flow_1to0b9x" sourceRef="ProvideSmsValidationCodeId" targetRef="ValidateCodeFromSmsId" />
+    <bpmn:sequenceFlow id="Flow_1dtsltc" sourceRef="ValidateCodeFromSmsId" targetRef="GatewayIsSmsCodeValid" />
+    <bpmn:exclusiveGateway id="GatewayIsSmsCodeValid" default="Flow_1qakdkp">
       <bpmn:incoming>Flow_1dtsltc</bpmn:incoming>
       <bpmn:outgoing>Flow_12zh4ga</bpmn:outgoing>
       <bpmn:outgoing>Flow_1qakdkp</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_12zh4ga" name="yes" sourceRef="Gateway_1ufjcc8" targetRef="SendSuceessVerificationSmsId">
+    <bpmn:sequenceFlow id="Flow_12zh4ga" name="yes" sourceRef="GatewayIsSmsCodeValid" targetRef="SendSuccessVerificationSmsId">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isSmsCodeValid== true}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:endEvent id="SendSuceessVerificationSmsId" name="Send suceess verification sms" camunda:asyncBefore="true">
+    <bpmn:endEvent id="SendSuccessVerificationSmsId" name="Send suceess verification sms" camunda:asyncBefore="true">
       <bpmn:incoming>Flow_12zh4ga</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0fm2dme" camunda:delegateExpression="${sendSuccessVerificationSmsDelegate}" />
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_1qakdkp" name="no" sourceRef="Gateway_1ufjcc8" targetRef="PrepareAndSendVerificationSmsId" />
-    <bpmn:serviceTask id="ValidatCodeFromSmsId" name="Validate code from sms" camunda:delegateExpression="${smsValidationDelegate}">
+    <bpmn:sequenceFlow id="Flow_1qakdkp" name="no" sourceRef="GatewayIsSmsCodeValid" targetRef="PrepareAndSendVerificationSmsId" />
+    <bpmn:serviceTask id="ValidateCodeFromSmsId" name="Validate code from sms" camunda:delegateExpression="${smsValidationDelegate}">
       <bpmn:incoming>Flow_1to0b9x</bpmn:incoming>
       <bpmn:outgoing>Flow_1dtsltc</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -93,7 +93,7 @@
       <bpmn:incoming>Flow_1xwcn4o</bpmn:incoming>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1brzdtq" camunda:delegateExpression="${sendFailedVerificationSmsDelegate}" />
     </bpmn:endEvent>
-    <bpmn:boundaryEvent id="ErrorNoMoreSmsValidationAttempts" name="After 3 attempts validation is failed" attachedToRef="ValidatCodeFromSmsId">
+    <bpmn:boundaryEvent id="ErrorNoMoreSmsValidationAttempts" name="After 3 attempts validation is failed" attachedToRef="ValidateCodeFromSmsId">
       <bpmn:outgoing>Flow_1xwcn4o</bpmn:outgoing>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_1o2owml" errorRef="Error_1p4hxh4" />
     </bpmn:boundaryEvent>
@@ -135,16 +135,16 @@
         <dc:Bounds x="660" y="250" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1ufjcc8_di" bpmnElement="Gateway_1ufjcc8" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_1ufjcc8_di" bpmnElement="GatewayIsSmsCodeValid" isMarkerVisible="true">
         <dc:Bounds x="845" y="555" width="50" height="50" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_13eu69x_di" bpmnElement="SendSuceessVerificationSmsId">
+      <bpmndi:BPMNShape id="Event_13eu69x_di" bpmnElement="SendSuccessVerificationSmsId">
         <dc:Bounds x="982" y="562" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="963" y="605" width="76" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_16ilcqk_di" bpmnElement="ValidatCodeFromSmsId" bioc:stroke="#6b3c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#6b3c00">
+      <bpmndi:BPMNShape id="Activity_16ilcqk_di" bpmnElement="ValidateCodeFromSmsId" bioc:stroke="#6b3c00" bioc:fill="#ffe0b2" color:background-color="#ffe0b2" color:border-color="#6b3c00">
         <dc:Bounds x="660" y="540" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>

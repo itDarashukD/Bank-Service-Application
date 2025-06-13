@@ -1,6 +1,5 @@
 package com.example.bankService.serivce.deposit.delegate.bank;
 
-import com.example.bankService.model.Client;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

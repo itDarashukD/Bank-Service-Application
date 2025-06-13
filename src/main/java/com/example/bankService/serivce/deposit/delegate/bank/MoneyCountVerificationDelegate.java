@@ -2,7 +2,6 @@ package com.example.bankService.serivce.deposit.delegate.bank;
 
 import static com.example.bankService.util.Constants.NOT_ENOUGH_MONEY;
 
-import com.example.bankService.model.Client;
 import com.example.bankService.model.DepositContract;
 import java.math.BigDecimal;
 import lombok.extern.slf4j.Slf4j;
